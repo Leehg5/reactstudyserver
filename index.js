@@ -33,9 +33,15 @@ app.get('/', (요청, 응답) => {
     응답.sendFile(path.join(__dirname,'../client/build/static/index.html'))
   })
 
-  app.post("/api/test", (요청,응답) => {
-    const CommunityPost = new Post({ title: "text", content: '테스트입니다!'})
-    CommunityPost.save().then(() => {
-    응답.status(200).json({ success: true, text: "안녕하세요" })
+  app.post("/api/post/submit", (req,res) => {
+    let temp = req.body
+    console.log(temp)
+    const CommunityPost = new Post(temp)
+    CommunityPost.save()
+    .then(() => {
+    res.status(200).json({ success: true })
     })
+    .catch((err) => {
+    res.status(400).json({ success: false })
   })
+})
